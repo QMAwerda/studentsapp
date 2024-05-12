@@ -1,0 +1,49 @@
+# version: '3'
+
+# services:
+#   postgres:
+#     image: 'postgres:latest'
+#     container_name: 'java-postgres'
+#     ports:
+#     - "5433:5433"
+#     environment:
+#       - 'POSTGRES_USER=user'
+#       - 'POSTGRES_PASSWORD=password'
+#       - 'POSTGRES_DB=students'
+#   java:
+#     container_name: java
+#     ports:
+#     # порт томкат у меня 8080
+#       - "6665:8080"
+#     build:
+#       context: .
+#     depends_on:
+#       - "postgres"
+
+version: '2'
+
+services:
+  app:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: .
+    container_name: app
+    depends_on:
+      - db
+    ports:
+    #localhost:5434 с него я пробрасываю на 8080 (по умолчанию) сервера tomcat, который у нас разворачивает spring
+    #так я сделал коннект с приложением
+    - 5434:8080
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/students # это определено и в application, но мб он не видит оттуда
+      #нужно проверить удалив это и строчку ниже.
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+          
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      # создает бд students
+      - POSTGRES_DB=students

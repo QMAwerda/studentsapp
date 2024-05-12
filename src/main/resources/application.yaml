@@ -1,0 +1,22 @@
+# Тут лежит информация, необходимая для подключения spring к базе данных
+
+# spring.application.name=springstudents
+
+# 1:11:32 https://youtu.be/fL5NDw0rDOI?si=Oldmm6gUFBkBzeUE
+
+spring:
+  datasource: # источник данных
+    # url: jdbc:postgresql://localhost:5433/students
+    url: jdbc:postgresql://java-postgres:5433/students
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver # у меня нет драйвера, нужно найти в инете
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: postgresql # используемая бд
+    database-platform: org.hibernate.dialect.PostgreSQLDialect # язык sql запросов
+    show-sql: false # отображение запросов в консоли
+    properties:
+      hibernate:
+        format_sql: true # форматирование
